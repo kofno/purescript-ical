@@ -12,7 +12,6 @@ import Control.Monad.Eff.Console (CONSOLE, log)
 import Data.Either (Either(..))
 
 
-
 main :: forall e. Eff (console :: CONSOLE | e) Unit
 main = do
   case runParser "RDATE;VALUE=DATE:19970304,19970504,19970704,19970904" schedule of

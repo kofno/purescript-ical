@@ -9,19 +9,23 @@ import Data.Foldable (intercalate)
 
 
 type Schedule
-  = List ContentLine
+  = List Content
 
 
-data ContentLine = ContentLine
-  { name :: String
-  , params :: Array Param
-  , value :: String
-  }
+type Name = String
+type Value = String
 
 
-instance showContentLine :: Show ContentLine where
-  show (ContentLine cl) =
-    "ContentLine { name : " ++ cl.name ++ ", params : " ++ show cl.params ++ ", value : " ++ cl.value ++ "}"
+data Content
+  = ContentLine Name (List Param) Value
+  | Component Name (List Content)
+
+instance showContent :: Show Content where
+  show (ContentLine name params value) =
+    "ContentLine: " ++ name ++ " " ++ show params ++ " " ++ value
+
+  show (Component name contents) =
+    "Component: " ++ name ++ "\n" ++ show contents
 
 
 data Param

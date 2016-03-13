@@ -3,12 +3,12 @@ module Text.ICal.Combinators where
 import Prelude
 
 import Text.Parsing.Parser (Parser)
-import Text.Parsing.Parser.Combinators (sepBy, between, optional)
+import Text.Parsing.Parser.Combinators (between, optional)
 import Text.Parsing.Parser.String (string, char, noneOf)
 import Text.Parsing.Parser.Token (alphaNum)
 
 import Data.Char (fromCharCode)
-import Data.String (fromCharArray, toCharArray, toUpper)
+import Data.String (fromCharArray, toCharArray)
 import Data.Array (range, singleton, some, many)
 
 import Control.Alt ((<|>))

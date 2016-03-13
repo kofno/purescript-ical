@@ -18,6 +18,7 @@
     "purescript-foldable-traversable": "^0.4.2",
     "purescript-node-fs-aff": "^0.3.1",
     "purescript-node-buffer": "^0.2.0",
-    "purescript-node-fs": "^0.10.1"
+    "purescript-node-fs": "^0.10.1",
+    "purescript-tuples": "purescript/purescript-tuples#^0.4.0"
   }
 }
