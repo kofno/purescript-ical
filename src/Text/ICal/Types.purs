@@ -2,14 +2,85 @@ module Text.ICal.Types where
 
 import Prelude
 
-import Data.List (List)
+import Data.List (List, length)
 import Data.Maybe (Maybe)
+import Data.Either (Either)
 import Data.Generic (class Generic, gShow)
 import Data.Foldable (intercalate)
 
 
 type Schedule
-  = List Content
+  = List (Either String Calendar)
+
+
+type CalendarRecord =
+  { prodId :: ProdID
+  , version :: ICalVersion
+  , calendarScale :: Maybe CalScale
+  , method :: Maybe Method
+  , otherProperties :: List Content
+  , vEvents :: List Content
+  , vTodos :: List Content
+  , vJournal :: List Content
+  , vFreeBusy :: List Content
+  , vTimezones :: List Content
+  , vAlarms :: List Content
+  , otherComponents :: List Content
+  }
+
+newtype Calendar =
+  Calendar CalendarRecord
+
+
+instance showCalendar :: Show Calendar where
+  show (Calendar rec) =
+    "Calendar { " -- TODO: full impl
+    ++ show (length rec.vEvents) ++ " events"
+    ++ " }"
+
+calendar :: ProdID
+         -> ICalVersion
+         -> Maybe CalScale
+         -> Maybe Method
+         -> List Content
+         -> List Content
+         -> List Content
+         -> List Content
+         -> List Content
+         -> List Content
+         -> List Content
+         -> List Content
+         -> CalendarRecord
+calendar =
+  { prodId: _
+  , version: _
+  , calendarScale: _
+  , method: _
+  , otherProperties: _
+  , vEvents: _
+  , vTodos: _
+  , vJournal: _
+  , vFreeBusy: _
+  , vTimezones: _
+  , vAlarms: _
+  , otherComponents: _
+  }
+
+data ProdID
+  = ProdID String (List Param)
+
+
+data ICalVersion
+  = ICalVersion String (List Param)
+  | MinMaxICalVersion String String (List Param)
+
+
+data CalScale
+  = CalScale String (List Param)
+
+
+data Method
+  = Method String (List Param)
 
 
 type Name = String

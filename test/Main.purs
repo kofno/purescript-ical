@@ -10,10 +10,11 @@ import Control.Monad.Eff (Eff)
 import Control.Monad.Aff.AVar (AVAR)
 
 import Data.Either (Either(..))
+import Data.Maybe (Maybe(..), isJust)
 import Data.List (List(..), length)
 
 import Text.ICal (schedule)
-import Text.ICal.Types (Content(..))
+import Text.ICal.Types (Content(..), Calendar)
 
 import Text.Parsing.Parser (runParser)
 
@@ -51,17 +52,19 @@ main = runTest do
     case runParser contents schedule of
       Right result -> do
         Assert.equal 1 (length result)
-        Assert.equal 38 (length $ firstComponent result)
+        Assert.assert
+          "Expected a successful calendar parse"
+          (isJust $ firstCalendar result)
       Left err -> Assert.assert (show err) false
 
 
 
-firstComponent :: List Content -> List Content
-firstComponent (Cons comp _) =
-  case comp of
-       Component _ content -> content
-       _ -> Nil
-firstComponent _ = Nil
+firstCalendar :: List (Either String Calendar) -> Maybe Calendar
+firstCalendar (Cons eitherCal _) =
+  case eitherCal of
+       Right cal -> Just cal
+       _ -> Nothing
+firstCalendar _ = Nothing
 
 
 singleLine :: String

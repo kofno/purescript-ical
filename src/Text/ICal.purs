@@ -11,13 +11,14 @@ import Data.List (List(..), (:), many, span, drop)
 import Text.ICal.Types (Schedule, Content(..))
 import Text.ICal.Combinators (crlf, nameParser, valueParser)
 import Text.ICal.Params (param)
+import Text.ICal.Calendar (calendarize)
 
 
 schedule :: Parser String Schedule
 schedule = do
-  result <- contentLine `sepEndBy` crlf
+  content <- contentLine `sepEndBy` crlf
   eof
-  return $ componentize result
+  return $ calendarize <$> componentize content
 
 
 contentLine :: Parser String Content
@@ -32,7 +33,7 @@ contentLine = do
 
 componentize :: List Content -> List Content
 componentize Nil = Nil
-componentize (Cons cl@(ContentLine "BEGIN" _ v) rest) =
+componentize (Cons (ContentLine "BEGIN" _ v) rest) =
   let
     nextComponent =
       span tilEnd rest

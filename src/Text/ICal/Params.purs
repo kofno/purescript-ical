@@ -122,7 +122,7 @@ paramValue name =
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.10
     "LANGUAGE" -> do
-      -- TODO: Parase language tag: https://tools.ietf.org/html/rfc5646
+      -- TODO: Parse language tag: https://tools.ietf.org/html/rfc5646
       value <- safeChars
       return $ Language value
 
