@@ -6,7 +6,7 @@ import Text.Parsing.Parser (Parser, fail)
 import Text.Parsing.Parser.Combinators (sepBy, optional)
 import Text.Parsing.Parser.String (char, string)
 
-import Text.ICal.Types
+import Text.ICal.Content
   ( Param(..)
   , CalendarUser(..)
   , Encoding(..)

@@ -1,22 +1,91 @@
-module Text.ICal.Calendar where
+module Text.ICal.Calendar
+  ( Calendar
+  , calendarize
+  )
+  where
 
 import Prelude
 
 import Data.Either (Either(..), either)
 import Data.Maybe (Maybe(..))
-import Data.List (List(..), filter, fromFoldable)
+import Data.List (List(..), filter, fromFoldable, length)
 import Data.String (split)
 
-import Text.ICal.Types
-  ( Calendar(..)
-  , Content(..)
-  , ProdID(..)
-  , ICalVersion(..)
-  , CalScale(..)
-  , Method(..)
+import Text.ICal.Content
+  ( Content(..)
   , Param
-  , calendar
   )
+
+
+type CalendarRecord =
+  { prodId :: ProdID
+  , version :: ICalVersion
+  , calendarScale :: Maybe CalScale
+  , method :: Maybe Method
+  , otherProperties :: List Content
+  , vEvents :: List Content
+  , vTodos :: List Content
+  , vJournal :: List Content
+  , vFreeBusy :: List Content
+  , vTimezones :: List Content
+  , vAlarms :: List Content
+  , otherComponents :: List Content
+  }
+
+newtype Calendar =
+  Calendar CalendarRecord
+
+
+instance showCalendar :: Show Calendar where
+  show (Calendar rec) =
+    "Calendar { " -- TODO: full impl
+    ++ show (length rec.vEvents) ++ " events"
+    ++ " }"
+
+calendar :: ProdID
+         -> ICalVersion
+         -> Maybe CalScale
+         -> Maybe Method
+         -> List Content
+         -> List Content
+         -> List Content
+         -> List Content
+         -> List Content
+         -> List Content
+         -> List Content
+         -> List Content
+         -> CalendarRecord
+calendar =
+  { prodId: _
+  , version: _
+  , calendarScale: _
+  , method: _
+  , otherProperties: _
+  , vEvents: _
+  , vTodos: _
+  , vJournal: _
+  , vFreeBusy: _
+  , vTimezones: _
+  , vAlarms: _
+  , otherComponents: _
+  }
+
+
+data ProdID
+  = ProdID String (List Param)
+
+
+data ICalVersion
+  = ICalVersion String (List Param)
+  | MinMaxICalVersion String String (List Param)
+
+
+data CalScale
+  = CalScale String (List Param)
+
+
+data Method
+  = Method String (List Param)
 
 
 calendarize :: Content -> Either String Calendar
@@ -65,6 +134,7 @@ iCalVersion content =
         Left "Unexpected Content"
       Left msg ->
         Left msg
+
 
 calScale :: List Content -> Either String (Maybe CalScale)
 calScale content =

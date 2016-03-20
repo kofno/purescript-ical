@@ -1,4 +1,8 @@
-module Text.ICal where
+module Text.ICal
+  ( Schedule
+  , schedule
+  )
+  where
 
 import Prelude
 
@@ -7,11 +11,16 @@ import Text.Parsing.Parser.Combinators (sepEndBy)
 import Text.Parsing.Parser.String (eof, char)
 
 import Data.List (List(..), (:), many, span, drop)
+import Data.Either (Either)
 
-import Text.ICal.Types (Schedule, Content(..))
+import Text.ICal.Content (Content(..))
 import Text.ICal.Combinators (crlf, nameParser, valueParser)
 import Text.ICal.Params (param)
-import Text.ICal.Calendar (calendarize)
+import Text.ICal.Calendar (Calendar, calendarize)
+
+
+type Schedule
+  = List (Either String Calendar)
 
 
 schedule :: Parser String Schedule
