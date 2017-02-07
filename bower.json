@@ -11,14 +11,14 @@
     "output"
   ],
   "dependencies": {
-    "purescript-console": "^0.1.0",
-    "purescript-parsing": "^0.8.0",
-    "purescript-test-unit": "^4.1.0",
-    "purescript-generics": "^0.7.2",
-    "purescript-foldable-traversable": "^0.4.2",
-    "purescript-node-fs-aff": "^0.3.1",
-    "purescript-node-buffer": "^0.2.0",
-    "purescript-node-fs": "^0.10.1",
-    "purescript-tuples": "purescript/purescript-tuples#^0.4.0"
+    "purescript-console": "^2.0.0",
+    "purescript-parsing": "^3.2.0",
+    "purescript-test-unit": "^10.1.0",
+    "purescript-generics": "^3.3.0",
+    "purescript-foldable-traversable": "^2.2.0",
+    "purescript-node-fs-aff": "^3.0.0",
+    "purescript-node-buffer": "^2.0.0",
+    "purescript-node-fs": "^3.0.0",
+    "purescript-tuples": "^3.1.0"
   }
 }

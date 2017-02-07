@@ -1,8 +1,10 @@
 module Test.Main where
 
 import Prelude
+import Control.Monad.Eff.Console (CONSOLE)
 
-import Test.Unit (test, runTest, TIMER)
+import Test.Unit (test)
+import Test.Unit.Main (runTest)
 import Test.Unit.Assert as Assert
 import Test.Unit.Console (TESTOUTPUT)
 
@@ -14,7 +16,7 @@ import Data.Maybe (Maybe(..), isJust)
 import Data.List (List(..), length)
 
 import Text.ICal (schedule)
-import Text.ICal.Types (Content(..), Calendar)
+import Text.ICal.Calendar (Calendar)
 
 import Text.Parsing.Parser (runParser)
 
@@ -24,7 +26,7 @@ import Node.Encoding (Encoding(..))
 
 main :: forall e.
         Eff
-          ( timer :: TIMER
+          ( console :: CONSOLE
           , avar :: AVAR
           , testOutput :: TESTOUTPUT
           , fs :: FS

@@ -5,11 +5,10 @@ module Text.ICal.Calendar
   where
 
 import Prelude
-
+import Data.String (Pattern(..), split)
 import Data.Either (Either(..), either)
 import Data.Maybe (Maybe(..))
 import Data.List (List(..), filter, fromFoldable, length)
-import Data.String (split)
 
 import Text.ICal.Content
   ( Content(..)
@@ -39,8 +38,8 @@ newtype Calendar =
 instance showCalendar :: Show Calendar where
   show (Calendar rec) =
     "Calendar { " -- TODO: full impl
-    ++ show (length rec.vEvents) ++ " events"
-    ++ " }"
+    <> show (length rec.vEvents) <> " events"
+    <> " }"
 
 calendar :: ProdID
          -> ICalVersion
@@ -245,14 +244,17 @@ otherComponents = Right <<< filter isOtherComponent
 isComponentOf :: String -> Content -> Boolean
 isComponentOf name content =
   case content of
-    (Component name _) -> true
+    (Component name' _) ->
+      if name == name' then true
+      else false
+      
     _ -> false
 
 req1 :: String -> List Content -> Either String Content
 req1 name contents =
   case opt1 name contents of
     Right Nothing ->
-      Left $ name ++ " must occur at least once"
+      Left $ name <> " must occur at least once"
     Right (Just c) ->
       Right c
     Left msg ->
@@ -276,13 +278,13 @@ opt1 name contents =
       Nil ->
         Right Nothing
       _ ->
-        Left $ name ++ " cannot appear more then one time: " ++ show filtered
+        Left $ name <> " cannot appear more then one time: " <> show filtered
 
 
 parseVersion :: String -> List Param -> Either String ICalVersion
 parseVersion ver params =
   let
-    parsed = fromFoldable $ split ";" ver
+    parsed = fromFoldable $ split (Pattern ";") ver
   in
     case parsed of
       Nil ->
@@ -293,6 +295,3 @@ parseVersion ver params =
         Right $ MinMaxICalVersion v1 v2 params
       _ ->
         Left "version can only have a min and a max (too many parts)"
-
-
-

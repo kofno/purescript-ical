@@ -18,10 +18,10 @@ data Content
 
 instance showContent :: Show Content where
   show (ContentLine name params value) =
-    "ContentLine: " ++ name ++ " " ++ show params ++ " " ++ value
+    "ContentLine: " <> name <> " " <> show params <> " " <> value
 
   show (Component name contents) =
-    "Component: " ++ name ++ "\n" ++ show contents
+    "Component: " <> name <> "\n" <> show contents
 
 
 data Param
@@ -49,52 +49,52 @@ data Param
 
 instance showParam :: Show Param where
   show (Altrep s) =
-    "Altrep:" ++ s
+    "Altrep:" <> s
 
   show (CommonName s) =
-    "CN:" ++ s
+    "CN:" <> s
 
   show (CalendarUserType cu) =
-    "CUTYPE:" ++ show cu
+    "CUTYPE:" <> show cu
 
   show (DelegatedFrom ss) =
-    "DELEGATED-FROM:" ++ intercalate "," ss
+    "DELEGATED-FROM:" <> intercalate "," ss
 
   show (DelegatedTo ss) =
-    "DELEGATED-TO:" ++ intercalate "," ss
+    "DELEGATED-TO:" <> intercalate "," ss
 
   show (Dir s) =
-    "DIR:" ++ s
+    "DIR:" <> s
 
   show (EncodingType enctype) =
-    "ENCODING:" ++ show enctype
+    "ENCODING:" <> show enctype
 
   show (FormatType s) =
-    "FMTTYPE:" ++ s
+    "FMTTYPE:" <> s
 
   show (FreeBusyType fbtype) =
-    "FBTYPE:" ++ show fbtype
+    "FBTYPE:" <> show fbtype
 
   show (Language s) =
-    "LANGUAGE:" ++ s
+    "LANGUAGE:" <> s
 
   show (Member ss) =
-    "MEMBER:" ++ intercalate "," ss
+    "MEMBER:" <> intercalate "," ss
 
   show (PartStat status) =
-    "PARTSTAT:" ++ show status
+    "PARTSTAT:" <> show status
 
   show (Range s) =
-    "RANGE:" ++ s
+    "RANGE:" <> s
 
   show (TriggerRelation state) =
-    "RELATED:" ++ show state
+    "RELATED:" <> show state
 
   show (RelType relationship) =
-    "RELTYPE:" ++ show relationship
+    "RELTYPE:" <> show relationship
 
   show (Role roleType) =
-    "ROLE:" ++ show roleType
+    "ROLE:" <> show roleType
 
   show (RSVP rsvp) =
     if rsvp
@@ -102,16 +102,16 @@ instance showParam :: Show Param where
       else "RSVP FALSE"
 
   show (SentBy s) =
-    "SENT-BY:" ++ s
+    "SENT-BY:" <> s
 
   show (TimezoneID s) =
-    "TZID:" ++ s
+    "TZID:" <> s
 
   show (Value valueType) =
-    "VALUE:" ++ show valueType
+    "VALUE:" <> show valueType
 
   show (OtherParam s ss) =
-    "OtherParam:" ++ s ++ " " ++ intercalate "," ss
+    "OtherParam:" <> s <> " " <> intercalate "," ss
 
 
 data CalendarUser

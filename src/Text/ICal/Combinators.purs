@@ -3,7 +3,7 @@ module Text.ICal.Combinators where
 import Prelude
 
 import Text.Parsing.Parser (Parser)
-import Text.Parsing.Parser.Combinators (between, optional)
+import Text.Parsing.Parser.Combinators as P
 import Text.Parsing.Parser.String (string, char, noneOf)
 import Text.Parsing.Parser.Token (alphaNum)
 
@@ -30,7 +30,7 @@ xName = do
   char 'X'
   char '-'
   rest <- ianaToken
-  return ("X-" ++ rest)
+  pure ("X-" <> rest)
 
 
 ianaChar :: Parser String Char
@@ -50,20 +50,20 @@ valueParser =
 
 doubleQuotes :: Parser String String -> Parser String String
 doubleQuotes =
-  between (string "\"") (string "\"")
+  P.between (string "\"") (string "\"")
 
 
 quoteSafeChars :: Parser String String
-quoteSafeChars = fromCharArray <$> many (unfold (noneOf $ controls ++ (singleton '"')))
+quoteSafeChars = fromCharArray <$> many (unfold (noneOf $ controls <> (singleton '"')))
 
 
 safeChars :: Parser String String
-safeChars = fromCharArray <$> many (unfold (noneOf $ controls ++ toCharArray "\";:,"))
+safeChars = fromCharArray <$> many (unfold (noneOf $ controls <> toCharArray "\";:,"))
 
 
 unfold :: forall a. Parser String a -> Parser String a
 unfold =
-  between (optional fws) (optional fws)
+  P.between (P.optional fws) (P.optional fws)
 
 
 fws :: Parser String String
@@ -73,9 +73,9 @@ fws =
 
 controls :: Array Char
 controls =
-  fromCharCode <$> (range 0x00 0x08) ++ (range 0x0A 0x1F) ++ (singleton 0x7F)
+  fromCharCode <$> (range 0x00 0x08) <> (range 0x0A 0x1F) <> (singleton 0x7F)
 
 
 nonTextual :: Array Char
 nonTextual =
-  fromCharCode <$> (range 0x00 0x08) ++ (range 0x0A 0x1F) ++ (range 0x7F 0x9F) ++ (range 0xA1 0xFF)
+  fromCharCode <$> (range 0x00 0x08) <> (range 0x0A 0x1F) <> (range 0x7F 0x9F) <> (range 0xA1 0xFF)

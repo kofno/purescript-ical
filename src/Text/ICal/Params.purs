@@ -46,17 +46,17 @@ paramValue name =
     "ALTREP" -> do
       -- TODO: Parse as a URI
       value <- doubleQuotes quoteSafeChars
-      return $ Altrep value
+      pure $ Altrep value
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.2
     "CN" -> do
       value <- paramValueChars
-      return $ CommonName value
+      pure $ CommonName value
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.3
     "CUTYPE" -> do
       value <- paramValueChars
-      return $
+      pure $
         case value of
           "INDIVIDUAL" ->
             CalendarUserType Individual
@@ -74,40 +74,40 @@ paramValue name =
     -- https://tools.ietf.org/html/rfc5545#section-3.2.4
     "DELEGATED-FROM" -> do
       values <- doubleQuotes quoteSafeChars `sepBy` char ','
-      return $ DelegatedFrom values
+      pure $ DelegatedFrom values
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.5
     "DELEGATED-TO" -> do
       values <- doubleQuotes quoteSafeChars `sepBy` char ','
-      return $ DelegatedTo values
+      pure $ DelegatedTo values
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.6
     "DIR" -> do
       value <- doubleQuotes quoteSafeChars
-      return $ Dir value
+      pure $ Dir value
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.7
     "ENCODING" -> do
       value <- string "8BIT" <|> string "BASE64"
       case value of
         "8BIT" ->
-          return $ EncodingType EightBit
+          pure $ EncodingType EightBit
         "BASE64" ->
-          return $ EncodingType Base64
+          pure $ EncodingType Base64
         _ ->
-          fail $ "Unrecognized encoding: " ++ value
+          fail $ "Unrecognized encoding: " <> value
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.8
     "FMTTYPE" -> do
       -- TODO: Properly parse type
       --   https://tools.ietf.org/html/rfc4288#section-4.2
       value <- paramValueChars
-      return $ FormatType value
+      pure $ FormatType value
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.9
     "FBTYPE" -> do
       value <- nameParser
-      return $
+      pure $
         case value of
           "FREE" ->
             FreeBusyType Free
@@ -124,17 +124,17 @@ paramValue name =
     "LANGUAGE" -> do
       -- TODO: Parse language tag: https://tools.ietf.org/html/rfc5646
       value <- safeChars
-      return $ Language value
+      pure $ Language value
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.11
     "MEMBER" -> do
       values <- doubleQuotes quoteSafeChars `sepBy` char ','
-      return $ Member values
+      pure $ Member values
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.12
     "PARTSTAT" -> do
       value <- nameParser
-      return $
+      pure $
         case value of
           "NEEDS-ACTION" ->
             PartStat (NeedsAction Nothing)
@@ -156,12 +156,12 @@ paramValue name =
     -- https://tools.ietf.org/html/rfc5545#section-3.2.13
     "RANGE" -> do
       value <- string "THISANDFUTURE"
-      return $ Range value
+      pure $ Range value
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.14
     "RELATED" -> do
       value <- string "START" <|> string "END"
-      return $
+      pure $
         case value of
           "START" ->
             TriggerRelation Start
@@ -173,7 +173,7 @@ paramValue name =
     -- https://tools.ietf.org/html/rfc5545#section-3.2.15
     "RELTYPE" -> do
       value <- nameParser
-      return $ RelType $
+      pure $ RelType $
         case value of
           "Parent" ->
             Parent Nothing
@@ -187,7 +187,7 @@ paramValue name =
     -- https://tools.ietf.org/html/rfc5545#section-3.2.16
     "ROLE" -> do
       value <- nameParser
-      return $ Role $
+      pure $ Role $
         case value of
           "CHAIR" ->
             Chair
@@ -203,7 +203,7 @@ paramValue name =
     -- https://tools.ietf.org/html/rfc5545#section-3.2.17
     "RSVP" -> do
       value <- string "TRUE" <|> string "FALSE"
-      return $ RSVP $
+      pure $ RSVP $
         case value of
           "TRUE" -> true
           "FALSE" -> false
@@ -212,18 +212,18 @@ paramValue name =
     -- https://tools.ietf.org/html/rfc5545#section-3.2.18
     "SENT-BY" -> do
       value <- doubleQuotes quoteSafeChars
-      return $ SentBy value
+      pure $ SentBy value
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.19
     "TZID" -> do
       optional (char '/')
       value <- paramValueChars
-      return $ TimezoneID value
+      pure $ TimezoneID value
 
     -- https://tools.ietf.org/html/rfc5545#section-3.2.20
     "VALUE" -> do
       value <- nameParser
-      return $ Value $
+      pure $ Value $
         case value of
           "BINARY" ->
             BinaryValue
@@ -258,4 +258,4 @@ paramValue name =
 
     _ -> do
       values <- paramValueChars `sepBy` char ','
-      return $ OtherParam name values
+      pure $ OtherParam name values

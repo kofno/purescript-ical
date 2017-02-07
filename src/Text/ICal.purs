@@ -27,7 +27,7 @@ schedule :: Parser String Schedule
 schedule = do
   content <- contentLine `sepEndBy` crlf
   eof
-  return $ calendarize <$> componentize content
+  pure $ calendarize <$> componentize content
 
 
 contentLine :: Parser String Content
@@ -36,7 +36,7 @@ contentLine = do
   params <- many param
   char ':'
   result <- valueParser
-  return $
+  pure $
     ContentLine lineName params result
 
 
